@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.2...sorbus-v0.0.3) (2026-03-01)
+
+
+### Bug Fixes
+
+* remove --provenance flag from npm publish ([4276a4a](https://github.com/skiftle/sorbus/commit/4276a4adfa13d19521c8fef4d5525470c5d540bb))
+
 ## [0.0.2](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.1...sorbus-v0.0.2) (2026-03-01)
 
 
