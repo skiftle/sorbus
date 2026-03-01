@@ -1,5 +1,10 @@
 export { createClient } from './client';
-export type { Cache, CacheEntry, CreateClientOptions, InferError } from './client';
+export type {
+  Cache,
+  CacheEntry,
+  CreateClientOptions,
+  InferError,
+} from './client';
 export type { Contract } from './contract';
 export { defineContract } from './contract';
 export { defineEndpoint } from './endpoint';

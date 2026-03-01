@@ -13,6 +13,22 @@ import { transformKeys } from './utils/transformKeys';
 
 const identity = (key: string): string => key;
 
+/** The ETag cache for GET requests. */
+export interface Cache {
+  /** Retrieves a cached entry by URL. */
+  get: (url: string) => CacheEntry | null | Promise<CacheEntry | null>;
+  /** Stores a cache entry by URL. */
+  set: (url: string, entry: CacheEntry) => Promise<void> | void;
+}
+
+/** A cached response entry. */
+export interface CacheEntry {
+  /** The ETag header value. */
+  etag: string;
+  /** The raw JSON response body. */
+  json: Dict;
+}
+
 /**
  * Options for {@link createClient}.
  *
@@ -43,32 +59,16 @@ export interface CreateClientOptions {
   serializeKey?: ((key: string) => string) | KeyFormat;
 }
 
-/** The ETag cache for GET requests. */
-export interface Cache {
-  /** Retrieves a cached entry by URL. */
-  get: (url: string) => CacheEntry | null | Promise<CacheEntry | null>;
-  /** Stores a cache entry by URL. */
-  set: (url: string, entry: CacheEntry) => Promise<void> | void;
-}
-
-/** A cached response entry. */
-export interface CacheEntry {
-  /** The ETag header value. */
-  etag: string;
-  /** The raw JSON response body. */
-  json: Dict;
-}
+/** The inferred error type from a contract's error schema. */
+export type InferError<T> = T extends { error: z.ZodType<infer E> }
+  ? E
+  : unknown;
 
 interface CallOptions {
   catch?: number[];
   headers?: HeadersInit;
   signal?: AbortSignal;
 }
-
-/** The inferred error type from a contract's error schema. */
-export type InferError<T> = T extends { error: z.ZodType<infer E> }
-  ? E
-  : unknown;
 
 interface SeparatedParams {
   body?: Dict;
