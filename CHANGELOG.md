@@ -1,0 +1,14 @@
+# Changelog
+
+## [0.0.2](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.1...sorbus-v0.0.2) (2026-03-01)
+
+
+### Features
+
+* initial release ([cfbfbde](https://github.com/skiftle/sorbus/commit/cfbfbdea3f9831b4b28618ee4c961b7ca6b1c20a))
+
+
+### Bug Fixes
+
+* apply formatting and export InferError ([9ab6138](https://github.com/skiftle/sorbus/commit/9ab61384c13be62581566da93743e83c3da20004))
+* install root dependencies before docs build in CI ([64a4c41](https://github.com/skiftle/sorbus/commit/64a4c414141284e7f28720b21ab18976f523a38f))
