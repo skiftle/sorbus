@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.4...sorbus-v0.0.5) (2026-03-01)
+
+
+### Bug Fixes
+
+* use npm CLI with OIDC for trusted publisher authentication ([9a1ce4b](https://github.com/skiftle/sorbus/commit/9a1ce4bec3e167ccaa689e5d41d2ffce9b37fee0))
+
 ## [0.0.4](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.3...sorbus-v0.0.4) (2026-03-01)
 
 
