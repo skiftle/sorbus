@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.6](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.5...sorbus-v0.0.6) (2026-03-01)
+
+
+### Bug Fixes
+
+* update package description ([8ff775f](https://github.com/skiftle/sorbus/commit/8ff775f3b628dfe5de94ea509529d13c00b8fbf2))
+
 ## [0.0.5](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.4...sorbus-v0.0.5) (2026-03-01)
 
 
