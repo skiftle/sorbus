@@ -1,7 +1,7 @@
 {
   "name": "sorbus",
   "version": "0.0.5",
-  "description": "Typed API client from contract definitions",
+  "description": "The typed fetch client",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
