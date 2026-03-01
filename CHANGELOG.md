@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.3...sorbus-v0.0.4) (2026-03-01)
+
+
+### Bug Fixes
+
+* use npm trusted publisher instead of token for publishing ([4e7d994](https://github.com/skiftle/sorbus/commit/4e7d994d229e5668397908384ed56d9f51d29f83))
+
 ## [0.0.3](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.2...sorbus-v0.0.3) (2026-03-01)
 
 
