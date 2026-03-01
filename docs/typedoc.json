@@ -1,0 +1,53 @@
+{
+  "name": "Reference",
+  "entryPoints": ["../src/index.ts"],
+  "tsconfig": "../tsconfig.json",
+  "plugin": [
+    "typedoc-plugin-markdown",
+    "typedoc-vitepress-theme",
+    "typedoc-plugin-frontmatter"
+  ],
+  "out": "./reference",
+  "docsRoot": ".",
+  "router": "member",
+  "cleanOutputDir": true,
+  "entryFileName": "index.md",
+  "readme": "none",
+  "excludeNotDocumented": true,
+  "hidePageHeader": true,
+  "hideBreadcrumbs": true,
+  "useCodeBlocks": false,
+  "expandObjects": true,
+  "expandParameters": false,
+
+  "parametersFormat": "table",
+  "interfacePropertiesFormat": "table",
+  "classPropertiesFormat": "table",
+  "typeDeclarationFormat": "table",
+  "indexFormat": "table",
+
+  "tableColumnSettings": {
+    "hideDefaults": false,
+    "hideInherited": true,
+    "hideModifiers": true,
+    "hideOverrides": true,
+    "hideSources": false,
+    "hideValues": false,
+    "leftAlignHeaders": true
+  },
+
+  "sidebar": {
+    "autoConfiguration": true,
+    "format": "vitepress",
+    "pretty": true,
+    "collapsed": false
+  },
+
+  "frontmatterGlobals": {
+    "prev": false,
+    "next": false
+  },
+
+  "sanitizeComments": true,
+  "useHTMLEncodedBrackets": true
+}
