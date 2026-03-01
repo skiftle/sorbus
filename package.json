@@ -1,0 +1,55 @@
+{
+  "name": "sorbus",
+  "version": "0.0.1",
+  "description": "Typed API client from contract definitions",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts",
+    "format": "prettier --check src/",
+    "format:fix": "prettier --write src/",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "author": "Skiftle",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skiftle/sorbus.git"
+  },
+  "packageManager": "pnpm@9.11.0",
+  "keywords": [
+    "api",
+    "client",
+    "typed",
+    "typescript",
+    "zod",
+    "contract"
+  ],
+  "peerDependencies": {
+    "zod": ">=4.0.0"
+  },
+  "devDependencies": {
+    "@skiftle/eslint-config": "0.1.0",
+    "eslint": "9.39.3",
+    "prettier": "3.8.1",
+    "tsup": "8.5.1",
+    "typescript": "5.9.3",
+    "vitest": "4.0.18",
+    "zod": "4.3.6"
+  }
+}
