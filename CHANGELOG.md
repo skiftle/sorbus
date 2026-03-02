@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.7](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.6...sorbus-v0.0.7) (2026-03-02)
+
+
+### Features
+
+* initial release ([4f80062](https://github.com/skiftle/sorbus/commit/4f80062f7f3a4648cd5f010d7df53cad7fc47aa7))
+
+
+### Bug Fixes
+
+* apply formatting and export InferError ([a4a12e3](https://github.com/skiftle/sorbus/commit/a4a12e32d26fb5f572e1eb65dab9385346c1c251))
+* install root dependencies before docs build in CI ([cc75f89](https://github.com/skiftle/sorbus/commit/cc75f890c632a3655ca284cc3e971a9c76bf4a43))
+* remove --provenance flag from npm publish ([c5106ee](https://github.com/skiftle/sorbus/commit/c5106eeffe95b60fa94bde676807fcc53917ebff))
+* update package description ([dc37ebc](https://github.com/skiftle/sorbus/commit/dc37ebcd7b957d6def2c56ec3ed7a0c673ca353a))
+* use npm CLI with OIDC for trusted publisher authentication ([8ea3b54](https://github.com/skiftle/sorbus/commit/8ea3b54bf8af951a93f6864e5710a66bcbd8a4b1))
+* use npm trusted publisher instead of token for publishing ([076f332](https://github.com/skiftle/sorbus/commit/076f332fe7d4ba3bf854f17521babf3a10f3e9d7))
+
 ## [0.0.6](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.5...sorbus-v0.0.6) (2026-03-01)
 
 
