@@ -1,4 +1,7 @@
-# sorbus
+# Sorbus
+
+![Sorbus](docs/public/logo-light.svg#gh-light-mode-only)
+![Sorbus](docs/public/logo-dark.svg#gh-dark-mode-only)
 
 [![npm version](https://img.shields.io/npm/v/sorbus)](https://www.npmjs.com/package/sorbus)
 [![CI](https://github.com/skiftle/sorbus/actions/workflows/ci.yml/badge.svg)](https://github.com/skiftle/sorbus/actions/workflows/ci.yml)

@@ -4,7 +4,11 @@ layout: home
 hero:
   name: Sorbus
   text: The typed fetch client
-  tagline: No codegen. No hard coupling. Just a contract and inference.
+  tagline: Call your API with confidence — and trust every result
+  image:
+    light: /logo-light.svg
+    dark: /logo-dark.svg
+    alt: Sorbus
   actions:
     - theme: brand
       text: Get Started
