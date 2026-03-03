@@ -15,7 +15,7 @@ importers:
         specifier: 9.39.3
         version: 9.39.3
       lefthook:
-        specifier: ^2.1.2
+        specifier: 2.1.2
         version: 2.1.2
       prettier:
         specifier: 3.8.1
