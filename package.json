@@ -46,6 +46,7 @@
   "devDependencies": {
     "@skiftle/eslint-config": "0.1.0",
     "eslint": "9.39.3",
+    "lefthook": "2.1.2",
     "prettier": "3.8.1",
     "tsup": "8.5.1",
     "typescript": "5.9.3",
