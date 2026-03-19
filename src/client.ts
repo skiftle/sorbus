@@ -164,6 +164,19 @@ export function createClient<T extends Contract>(
     throw new ParseError(error as Error);
   }
 
+  async function parseErrorBody(response: Response): Promise<unknown> {
+    try {
+      const json = (await response.json()) as Dict;
+      const normalized = normalizeKeys(json);
+
+      if (!contract.error) return normalized;
+
+      return contract.error.safeParse(normalized).data ?? normalized;
+    } catch {
+      return null;
+    }
+  }
+
   function createEndpointFn(endpoint: Endpoint) {
     async function execute(
       separated: SeparatedParams,
@@ -207,10 +220,24 @@ export function createClient<T extends Contract>(
         );
       }
 
-      const catching = callOptions?.catch;
+      const catchStatuses = callOptions?.catch;
+
+      if (!response.ok && response.status !== 304) {
+        const errorData = await parseErrorBody(response);
+
+        if (catchStatuses?.includes(response.status)) {
+          return {
+            data: errorData,
+            ok: false as const,
+            status: response.status,
+          };
+        }
+
+        throw new ApiError(response.status, errorData);
+      }
 
       if (response.status === 204 || !endpoint.response) {
-        return catching
+        return catchStatuses
           ? { data: undefined, ok: true as const, status: response.status }
           : undefined;
       }
@@ -220,7 +247,9 @@ export function createClient<T extends Contract>(
           const data: unknown = endpoint.response.body.parse(
             normalizeKeys(cacheEntry.json),
           );
-          return catching ? { data, ok: true as const, status: 304 } : data;
+          return catchStatuses
+            ? { data, ok: true as const, status: 304 }
+            : data;
         } catch (error) {
           throw new ParseError(error as Error);
         }
@@ -234,38 +263,19 @@ export function createClient<T extends Contract>(
         throw new ApiError(response.status, null);
       }
 
-      const normalized = normalizeKeys(json);
-
-      if (response.ok) {
-        if (endpoint.method === 'GET' && response.status === 200) {
-          const etag = response.headers.get('ETag');
-          if (etag) await cache?.set(url, { etag, json });
-        }
-
-        try {
-          const data: unknown = endpoint.response.body.parse(normalized);
-          return catching
-            ? { data, ok: true as const, status: response.status }
-            : data;
-        } catch (error) {
-          throw new ParseError(error as Error);
-        }
+      if (endpoint.method === 'GET' && response.status === 200) {
+        const etag = response.headers.get('ETag');
+        if (etag) await cache?.set(url, { etag, json });
       }
 
-      let errorData: unknown;
-
-      if (contract.error) {
-        const result = contract.error.safeParse(normalized);
-        errorData = result.success ? result.data : normalized;
-      } else {
-        errorData = normalized;
+      try {
+        const data: unknown = endpoint.response.body.parse(normalizeKeys(json));
+        return catchStatuses
+          ? { data, ok: true as const, status: response.status }
+          : data;
+      } catch (error) {
+        throw new ParseError(error as Error);
       }
-
-      if (catching?.includes(response.status)) {
-        return { data: errorData, ok: false as const, status: response.status };
-      }
-
-      throw new ApiError(response.status, errorData);
     }
 
     function flat(
