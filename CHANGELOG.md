@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.8](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.7...sorbus-v0.0.8) (2026-04-04)
+
+
+### Bug Fixes
+
+* handle empty response body without throwing ([94b7c6a](https://github.com/skiftle/sorbus/commit/94b7c6accc18edbbaa33154ae34e2cedab4ef440))
+* throw ApiError for non-2xx responses without response schema ([69d3af3](https://github.com/skiftle/sorbus/commit/69d3af3f6936a1a7a7cc9cf42f34e176bbf773df))
+
 ## [0.0.7](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.6...sorbus-v0.0.7) (2026-03-02)
 
 
