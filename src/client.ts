@@ -257,10 +257,18 @@ export function createClient<T extends Contract>(
 
       let json: Dict;
 
+      const text = await response.text();
+
+      if (!text) {
+        return catchStatuses
+          ? { data: undefined, ok: true as const, status: response.status }
+          : undefined;
+      }
+
       try {
-        json = (await response.json()) as Dict;
+        json = JSON.parse(text) as Dict;
       } catch {
-        throw new ApiError(response.status, null);
+        throw new ParseError(new Error('Failed to parse response as JSON'));
       }
 
       if (endpoint.method === 'GET' && response.status === 200) {

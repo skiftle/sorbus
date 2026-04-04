@@ -153,6 +153,24 @@ describe('createClient', () => {
     });
   });
 
+  describe('empty response body', () => {
+    it('returns undefined for 200 with empty body', async () => {
+      const fetchFn = mockFetch(200);
+      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+
+      await expect(client.invoices.get({ id: 42 })).resolves.toBeUndefined();
+    });
+
+    it('returns ok Result with undefined data in catch mode for 200 with empty body', async () => {
+      const fetchFn = mockFetch(200);
+      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+
+      const result = await client.invoices.get({ id: 42 }, { catch: [404] });
+
+      expect(result).toEqual({ data: undefined, ok: true, status: 200 });
+    });
+  });
+
   describe('catch mode', () => {
     it('returns ok Result on success', async () => {
       const fetchFn = mockFetch(200, { id: 42, number: 'INV-001', status: 'draft' });
