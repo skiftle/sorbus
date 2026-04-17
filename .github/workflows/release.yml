@@ -31,4 +31,5 @@ jobs:
           node-version-file: .nvmrc
           registry-url: 'https://registry.npmjs.org'
       - run: pnpm install --frozen-lockfile
-      - run: pnpm publish --provenance --access public --no-git-checks
+      - run: npm install -g npm@11
+      - run: npm publish --provenance --access public
