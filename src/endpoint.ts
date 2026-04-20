@@ -2,7 +2,7 @@ import type { ZodType } from 'zod';
 
 import { isPlainObject } from './utils/isPlainObject';
 
-/** A single API endpoint. */
+/** The API endpoint. */
 export interface Endpoint {
   /** The HTTP error status codes. */
   errors?: readonly number[];
@@ -26,7 +26,7 @@ export interface Endpoint {
   };
 }
 
-/** The HTTP methods supported by endpoints. */
+/** The supported HTTP method. */
 export type EndpointMethod =
   | 'DELETE'
   | 'GET'
@@ -36,13 +36,16 @@ export type EndpointMethod =
   | 'POST'
   | 'PUT';
 
-/** A nested tree of endpoints, grouped by resource. */
+/** The nested tree of endpoints, grouped by resource. */
 export interface EndpointTree {
   [key: string]: Endpoint | EndpointTree;
 }
 
 /**
  * Defines an endpoint with full type inference.
+ *
+ * @param endpoint - The endpoint definition.
+ * @returns The endpoint, typed as passed in.
  *
  * @example
  * ```ts

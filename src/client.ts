@@ -1,16 +1,16 @@
 import type { ZodType } from 'zod';
 
 import type { Contract } from './contract';
-import type { Cache, OperationContext, OperationTree } from './types';
 import type { KeyFormat } from './keyFormat';
+import type { Cache, OperationContext, OperationTree } from './types';
 
-import { buildOperationTree } from './operation';
 import { resolveKeyTransform } from './keyFormat';
+import { buildOperationTree } from './operation';
 
 const identity = (key: string): string => key;
 
 /**
- * Options for {@link createClient}.
+ * The options for {@link createClient}.
  *
  * @example
  * ```ts
@@ -39,13 +39,13 @@ export interface CreateClientOptions {
   serializeKey?: ((key: string) => string) | KeyFormat;
 }
 
-/** The inferred client type from a contract. */
+/** The inferred client type for contract `T`. */
 export type InferClient<T extends Contract> = OperationTree<
   T['endpoints'],
   InferError<T>
 >;
 
-/** The inferred error type from a contract's error schema. */
+/** The inferred error type for contract `T`. */
 export type InferError<T> = T extends { error: ZodType<infer E> } ? E : unknown;
 
 /**
@@ -54,6 +54,7 @@ export type InferError<T> = T extends { error: ZodType<infer E> } ? E : unknown;
  * @param contract - The contract.
  * @param baseUrl - The base URL for all requests.
  * @param options - The client options.
+ * @returns The typed API client.
  *
  * @example
  * ```ts

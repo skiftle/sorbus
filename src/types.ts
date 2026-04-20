@@ -2,9 +2,9 @@ import type { output, ZodType } from 'zod';
 
 /** The ETag cache for GET requests. */
 export interface Cache {
-  /** Retrieves a cached entry by URL. */
+  /** Retrieves the cached entry for `url`, or `null` if missing. */
   get: (url: string) => CacheEntry | null | Promise<CacheEntry | null>;
-  /** Stores a cache entry by URL. */
+  /** Stores `entry` under `url`. */
   set: (url: string, entry: CacheEntry) => Promise<void> | void;
 }
 
@@ -16,9 +16,10 @@ export interface CacheEntry {
   json: Dict;
 }
 
+/** A plain object with string keys and unknown values. */
 export type Dict = Record<string, unknown>;
 
-/** A callable client operation with flat and raw overloads. */
+/** The callable client operation with flat and raw overloads. */
 export type Operation<T, TError = unknown> = OperationSignature<
   OperationFlatParams<T>,
   OperationResponse<T>,
@@ -42,58 +43,6 @@ export interface OperationContext {
   normalizeKey: (key: string) => string;
   serializeKey: (key: string) => string;
 }
-
-export interface OperationSignature<TParams, TResponse, TErrors, TError> {
-  (...args: OptionalIfEmpty<TParams>): Promise<TResponse>;
-  (params: TParams, options: RequestOptions): Promise<TResponse>;
-  (
-    params: TParams,
-    options: RequestOptions & { catch: TErrors[] },
-  ): Promise<Result<TResponse, TError>>;
-}
-
-// --- Inference helpers ---
-
-export type OperationTree<T, TError = unknown> = {
-  [K in keyof T]: T[K] extends { method: string; path: string }
-    ? Operation<T[K], TError>
-    : T[K] extends Record<string, unknown>
-      ? OperationTree<T[K], TError>
-      : never;
-};
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export type OptionalIfEmpty<T> = {} extends T ? [params?: T] : [params: T];
-
-/** The per-request options. */
-export interface RequestOptions {
-  /** The per-request headers. */
-  headers?: HeadersInit;
-  /** The abort signal. */
-  signal?: AbortSignal;
-}
-
-/**
- * The return type when using `catch`. Discriminated on `ok`.
- *
- * @example
- * ```ts
- * const result = await api.invoices.show(
- *   { id: '1' },
- *   { catch: [404] },
- * );
- *
- * if (result.ok) {
- *   console.log(result.data);
- * } else {
- *   console.log(result.status);
- *   console.log(result.data);
- * }
- * ```
- */
-export type Result<TData, TError = unknown> =
-  | { data: TData; ok: true; status: number }
-  | { data: TError; ok: false; status: number };
 
 export type OperationErrors<T> = T extends { errors: readonly (infer E)[] }
   ? E
@@ -119,6 +68,58 @@ export type OperationRawParams<T> = ([BodyOf<T>] extends [never]
 export type OperationResponse<T> = [ResponseOf<T>] extends [never]
   ? undefined
   : SchemaOutput<ResponseOf<T>>;
+
+export interface OperationSignature<TParams, TResponse, TErrors, TError> {
+  (...args: OptionalIfEmpty<TParams>): Promise<TResponse>;
+  (params: TParams, options: RequestOptions): Promise<TResponse>;
+  (
+    params: TParams,
+    options: RequestOptions & { catch: readonly TErrors[] },
+  ): Promise<Result<TResponse, TError>>;
+}
+
+// --- Inference helpers ---
+
+export type OperationTree<T, TError = unknown> = {
+  [K in keyof T]: T[K] extends { method: string; path: string }
+    ? Operation<T[K], TError>
+    : T[K] extends Record<string, unknown>
+      ? OperationTree<T[K], TError>
+      : never;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export type OptionalIfEmpty<T> = {} extends T ? [params?: T] : [params: T];
+
+/** The per-request options. */
+export interface RequestOptions {
+  /** The per-request headers. */
+  headers?: HeadersInit;
+  /** The abort signal. */
+  signal?: AbortSignal;
+}
+
+/**
+ * The result returned when the `catch` option is set, discriminated on `ok`.
+ *
+ * @example
+ * ```ts
+ * const result = await api.invoices.show(
+ *   { id: '1' },
+ *   { catch: [404] },
+ * );
+ *
+ * if (result.ok) {
+ *   console.log(result.data);
+ * } else {
+ *   console.log(result.status);
+ *   console.log(result.data);
+ * }
+ * ```
+ */
+export type Result<TData, TError = unknown> =
+  | { data: TData; ok: true; status: number }
+  | { data: TError; ok: false; status: number };
 
 type BodyOf<T> = T extends { request: { body: infer B } } ? B : never;
 

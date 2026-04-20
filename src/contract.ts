@@ -2,7 +2,7 @@ import type { ZodType } from 'zod';
 
 import type { EndpointTree } from './endpoint';
 
-/** The structure of an API contract. */
+/** The API contract. */
 export interface Contract {
   /** The endpoint tree. */
   endpoints: EndpointTree;
@@ -12,6 +12,9 @@ export interface Contract {
 
 /**
  * Defines a contract with full type inference.
+ *
+ * @param contract - The contract definition.
+ * @returns The contract, typed as passed in.
  *
  * @example
  * ```ts

@@ -1,6 +1,10 @@
 /**
  * The key format for request serialization or response normalization.
  *
+ * Keys that are already all-uppercase (e.g. `URL`, `ID`, `HTTP`) pass through
+ * unchanged to preserve acronyms. To transform them, supply a custom function
+ * instead of a preset format.
+ *
  * @example
  * ```ts
  * import { createClient } from 'sorbus';
