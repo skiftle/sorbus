@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.10](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.9...sorbus-v0.0.10) (2026-04-20)
+
+
+### Bug Fixes
+
+* preserve plain output types in Operation&lt;T&gt; ([9c3b169](https://github.com/skiftle/sorbus/commit/9c3b169d96cfe13f6015a5718da23c2cc35d7a02))
+
 ## [0.0.9](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.8...sorbus-v0.0.9) (2026-04-20)
 
 
