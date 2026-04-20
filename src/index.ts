@@ -7,6 +7,7 @@ export type {
   CacheEntry,
   Dict,
   Operation,
+  OperationTree,
   RequestOptions,
   Result,
 } from './types';

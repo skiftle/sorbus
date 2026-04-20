@@ -75,6 +75,7 @@ export interface OperationSignature<TParams, TResponse, TErrors, TError> {
 
 // --- Inference helpers ---
 
+/** The operation tree for endpoint tree `T` with error type `TError`. */
 export type OperationTree<T, TError = unknown> = {
   [K in keyof T]: T[K] extends { method: string; path: string }
     ? Operation<T[K], TError>
