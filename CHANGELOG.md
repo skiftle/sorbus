@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.9](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.8...sorbus-v0.0.9) (2026-04-20)
+
+
+### Bug Fixes
+
+* expose OperationTree as public type ([cf9630b](https://github.com/skiftle/sorbus/commit/cf9630b5e64983404491ca00918281b41f43822e))
+* harden error paths and path param handling ([e6502bb](https://github.com/skiftle/sorbus/commit/e6502bbb1d41d1606f6fba6f70febe0e92a8e566))
+
 ## [0.0.8](https://github.com/skiftle/sorbus/compare/sorbus-v0.0.7...sorbus-v0.0.8) (2026-04-04)
 
 
