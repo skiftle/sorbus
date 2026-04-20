@@ -1,19 +1,15 @@
-export { createClient } from './client';
-export type {
-  Cache,
-  CacheEntry,
-  CreateClientOptions,
-  InferError,
-} from './client';
+export { createClient, createClientFactory } from './client';
+export type { CreateClientOptions, InferClient, InferError } from './client';
 export type { Contract } from './contract';
 export { defineContract } from './contract';
 export { defineEndpoint } from './endpoint';
-export type { Endpoint, EndpointDict, EndpointMethod } from './endpoint';
+export type { Endpoint, EndpointMethod, EndpointTree } from './endpoint';
 export { ApiError, FetchError, ParseError } from './errors';
 export type {
-  Client,
-  ClientEndpoint,
+  Cache,
+  CacheEntry,
   Dict,
+  Operation,
   RequestOptions,
   Result,
 } from './types';

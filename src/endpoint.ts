@@ -1,6 +1,6 @@
-import type { z } from 'zod';
+import type { ZodType } from 'zod';
 
-import type { Dict } from './types';
+import { isPlainObject } from './utils/isPlainObject';
 
 /** A single API endpoint. */
 export interface Endpoint {
@@ -11,23 +11,19 @@ export interface Endpoint {
   /** The URL path (e.g. `/invoices/:id`). */
   path: string;
   /** The Zod schema for path parameters. */
-  pathParams?: z.ZodType;
+  pathParams?: ZodType;
   /** The request schemas. */
   request?: {
     /** The Zod schema for the request body. */
-    body?: z.ZodType;
+    body?: ZodType;
     /** The Zod schema for query parameters. */
-    query?: z.ZodType;
+    query?: ZodType;
   };
   /** The response schemas. */
   response?: {
     /** The Zod schema for the response body. */
-    body: z.ZodType;
+    body: ZodType;
   };
-}
-
-export interface EndpointDict {
-  [key: string]: Endpoint | EndpointDict;
 }
 
 /** The HTTP methods supported by endpoints. */
@@ -40,21 +36,9 @@ export type EndpointMethod =
   | 'POST'
   | 'PUT';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type EndpointFn = ((...args: any[]) => any) & { raw: (...args: any[]) => any };
-
-export function buildEndpointDict(
-  tree: EndpointDict,
-  createEndpointFn: (options: Endpoint) => EndpointFn,
-): Dict {
-  return Object.entries(tree).reduce<Dict>((result, [key, value]) => {
-    if (isEndpoint(value)) {
-      result[key] = createEndpointFn(value);
-    } else {
-      result[key] = buildEndpointDict(value, createEndpointFn);
-    }
-    return result;
-  }, {});
+/** A nested tree of endpoints, grouped by resource. */
+export interface EndpointTree {
+  [key: string]: Endpoint | EndpointTree;
 }
 
 /**
@@ -96,12 +80,11 @@ const METHODS: ReadonlySet<string> = new Set([
   'PUT',
 ]);
 
-export function isEndpoint(obj: unknown): obj is Endpoint {
-  if (typeof obj !== 'object' || obj === null) return false;
-  const record = obj as Record<string, unknown>;
+export function isEndpoint(value: unknown): value is Endpoint {
   return (
-    typeof record.method === 'string' &&
-    METHODS.has(record.method) &&
-    typeof record.path === 'string'
+    isPlainObject(value) &&
+    typeof value.method === 'string' &&
+    METHODS.has(value.method) &&
+    typeof value.path === 'string'
   );
 }

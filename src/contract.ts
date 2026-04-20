@@ -1,13 +1,13 @@
-import type { z } from 'zod';
+import type { ZodType } from 'zod';
 
-import type { EndpointDict } from './endpoint';
+import type { EndpointTree } from './endpoint';
 
 /** The structure of an API contract. */
 export interface Contract {
   /** The endpoint tree. */
-  endpoints: EndpointDict;
+  endpoints: EndpointTree;
   /** The Zod schema for error responses. */
-  error?: z.ZodType;
+  error?: ZodType;
 }
 
 /**
