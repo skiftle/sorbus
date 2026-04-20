@@ -56,6 +56,7 @@ import type {
   Endpoint,
   EndpointMethod,
   KeyFormat,
+  Operation,
   RequestOptions,
   Result,
 } from 'sorbus';

@@ -137,7 +137,7 @@ Sorbus expects your API to return errors in a consistent format — one schema, 
 
 1. You write a **contract** — a plain object with Zod schemas for each endpoint
 2. `createClient` builds a **typed client** from the contract's endpoint tree
-3. Each endpoint becomes a **function** with inferred params and response types
+3. Each endpoint becomes an **Operation** — a callable with inferred params, response, and a `.raw()` overload
 4. Calls **without** `catch` return the response data directly — errors throw
 5. Calls **with** `catch` return a `Result` — caught errors are values, uncaught errors throw
 

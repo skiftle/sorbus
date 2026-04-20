@@ -3,7 +3,7 @@ order: 5
 ---
 # Requests
 
-Every endpoint in the contract becomes a function on the client. Params are a single flat object — path, query, and body params are merged together. Sorbus separates them using the endpoint's `pathParams`, `request.query`, and `request.body` schemas.
+Every endpoint in the contract becomes an Operation on the client. Params are a single flat object — path, query, and body params are merged together. Sorbus separates them using the endpoint's `pathParams`, `request.query`, and `request.body` schemas.
 
 ## GET — Show
 
@@ -88,7 +88,7 @@ Params are validated by Zod at runtime. If you pass an unexpected field or a wro
 
 ## Raw Params
 
-Every endpoint has a `.raw()` method that accepts `pathParams`, `query`, and `body` as separate keys. This is useful when you need explicit control over where each param goes:
+Every Operation has a `.raw()` method that accepts `pathParams`, `query`, and `body` as separate keys. This is useful when you need explicit control over where each param goes:
 
 ```typescript
 api.invoices.update.raw({

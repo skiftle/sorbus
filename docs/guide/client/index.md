@@ -3,7 +3,7 @@ order: 4
 ---
 # Client
 
-`createClient` takes a contract and returns a fully typed API client. Each endpoint in the contract becomes a callable function on the client.
+`createClient` takes a contract and returns a fully typed API client. Each endpoint in the contract becomes an **Operation** on the client.
 
 ## Creating a Client
 
@@ -15,6 +15,20 @@ export const api = createClient(contract, '/api');
 ```
 
 The second argument is the base URL. It can be a relative path (`/api`) or an absolute URL (`https://api.example.com`).
+
+## Operations
+
+Every endpoint on the client is an `Operation`. Calling it sends the request. It also exposes a `.raw()` overload for explicit path, query, and body separation (see [Requests](../requests/)).
+
+Import the `Operation` type when you need a standalone reference to an endpoint — for example to pass one around or wrap it:
+
+```typescript
+import type { Operation } from 'sorbus';
+import type { contract } from './contract';
+
+const showInvoice: Operation<typeof contract.endpoints.invoices.show> =
+  api.invoices.show;
+```
 
 ## Options
 
@@ -66,7 +80,7 @@ const api = createClient(contract, '/api', {
 
 ## Per-Request Options
 
-Every endpoint call accepts an optional second argument with `headers` and `signal`. Per-request headers are merged with global headers — per-request values take precedence on collision.
+Every Operation call accepts an optional second argument with `headers` and `signal`. Per-request headers are merged with global headers — per-request values take precedence on collision.
 
 ```typescript
 const { invoice } = await api.invoices.show({ id: '123' }, {
