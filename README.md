@@ -26,6 +26,7 @@ pnpm add sorbus zod
 ## The Contract
 
 ```typescript
+import { defineContract, defineEndpoint } from 'sorbus';
 import * as z from 'zod';
 
 const InvoiceSchema = z.object({
@@ -34,49 +35,55 @@ const InvoiceSchema = z.object({
   total: z.number(),
 });
 
-export const contract = {
+const show = defineEndpoint({
+  method: 'GET',
+  path: '/invoices/:id',
+  pathParams: z.object({
+    id: z.string(),
+  }),
+  response: {
+    body: z.object({
+      invoice: InvoiceSchema,
+    }),
+  },
+});
+
+const create = defineEndpoint({
+  method: 'POST',
+  path: '/invoices',
+  request: {
+    body: z.object({
+      invoice: InvoiceSchema.pick({
+        number: true,
+        total: true,
+      }),
+    }),
+  },
+  response: {
+    body: z.object({
+      invoice: InvoiceSchema,
+    }),
+  },
+  errors: [422],
+});
+
+export const contract = defineContract({
   endpoints: {
     invoices: {
-      show: {
-        method: 'GET',
-        path: '/invoices/:id',
-        pathParams: z.object({
-          id: z.string(),
-        }),
-        response: {
-          body: z.object({
-            invoice: InvoiceSchema,
-          }),
-        },
-      },
-      create: {
-        method: 'POST',
-        path: '/invoices',
-        request: {
-          body: z.object({
-            invoice: InvoiceSchema.pick({
-              number: true,
-              total: true,
-            }),
-          }),
-        },
-        response: {
-          body: z.object({
-            invoice: InvoiceSchema,
-          }),
-        },
-        errors: [422],
-      },
+      show,
+      create,
     },
   },
   error: z.object({
     message: z.string(),
     errors: z.record(z.string(), z.array(z.string())).optional(),
   }),
-} as const;
+});
 ```
 
 ## The Client
+
+Each endpoint in the contract becomes an Operation on the client — a callable with flat and raw overloads.
 
 ```typescript
 import { createClient } from 'sorbus';
