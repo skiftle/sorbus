@@ -13,4 +13,4 @@ export type {
   RequestOptions,
   Result,
 } from './types';
-export type { KeyFormat } from './utils/keyFormat';
+export type { KeyFormat } from './keyFormat';

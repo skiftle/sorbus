@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { resolveKeyTransform } from '../../src/utils/keyFormat';
+import { resolveKeyTransform } from '../src/keyFormat';
 
 describe('resolveKeyTransform', () => {
   describe('camel', () => {
