@@ -18,6 +18,7 @@
  */
 export type KeyFormat = 'camel' | 'kebab' | 'pascal' | 'snake';
 
+/** @internal */
 export function resolveKeyTransform(
   format: KeyFormat,
 ): (key: string) => string {

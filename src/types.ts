@@ -16,7 +16,7 @@ export interface CacheEntry {
   json: Dict;
 }
 
-/** A plain object with string keys and unknown values. */
+/** @internal */
 export type Dict = Record<string, unknown>;
 
 /** The callable client operation with flat and raw overloads. */
@@ -34,6 +34,7 @@ export type Operation<T, TError = unknown> = OperationSignature<
   >;
 };
 
+/** @internal */
 export interface OperationContext {
   baseUrl: string;
   cache?: Cache;
@@ -44,14 +45,17 @@ export interface OperationContext {
   serializeKey: (key: string) => string;
 }
 
+/** @internal */
 export type OperationErrors<T> = T extends { errors: readonly (infer E)[] }
   ? E
   : number;
 
+/** @internal */
 export type OperationFlatParams<T> = SchemaOutput<BodyOf<T>> &
   SchemaOutput<PathParamsOf<T>> &
   SchemaOutput<QueryOf<T>>;
 
+/** @internal */
 export type OperationRawParams<T> = ([BodyOf<T>] extends [never]
   ? {}
   : { body: SchemaOutput<BodyOf<T>> }) &
@@ -60,10 +64,12 @@ export type OperationRawParams<T> = ([BodyOf<T>] extends [never]
     : { pathParams: SchemaOutput<PathParamsOf<T>> }) &
   ([QueryOf<T>] extends [never] ? {} : { query: SchemaOutput<QueryOf<T>> });
 
+/** @internal */
 export type OperationResponse<T> = [ResponseOf<T>] extends [never]
   ? undefined
   : SchemaOutput<ResponseOf<T>>;
 
+/** @internal */
 export interface OperationSignature<TParams, TResponse, TErrors, TError> {
   (...args: OptionalIfEmpty<TParams>): Promise<TResponse>;
   (params: TParams, options: RequestOptions): Promise<TResponse>;
@@ -73,9 +79,7 @@ export interface OperationSignature<TParams, TResponse, TErrors, TError> {
   ): Promise<Result<TResponse, TError>>;
 }
 
-// --- Inference helpers ---
-
-/** The operation tree for endpoint tree `T` with error type `TError`. */
+/** @internal */
 export type OperationTree<T, TError = unknown> = {
   [K in keyof T]: T[K] extends { method: string; path: string }
     ? Operation<T[K], TError>
@@ -83,6 +87,7 @@ export type OperationTree<T, TError = unknown> = {
       ? OperationTree<T[K], TError>
       : never;
 };
+/** @internal */
 export type OptionalIfEmpty<T> = {} extends T ? [params?: T] : [params: T];
 
 /** The per-request options. */

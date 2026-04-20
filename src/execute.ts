@@ -5,18 +5,21 @@ import { ApiError, FetchError, ParseError } from './errors';
 import { buildUrl } from './utils/build-url';
 import { transformKeys } from './utils/transform-keys';
 
+/** @internal */
 export interface CallOptions {
   catch?: readonly number[];
   headers?: HeadersInit;
   signal?: AbortSignal;
 }
 
+/** @internal */
 export interface SeparatedParams {
   body?: Dict;
   pathParams?: Dict;
   query?: Dict;
 }
 
+/** @internal */
 export async function execute(
   endpoint: Endpoint,
   context: OperationContext,
@@ -80,6 +83,7 @@ export async function execute(
   );
 }
 
+/** @internal */
 export function rethrowOrWrap(error: unknown): never {
   if (
     error instanceof ApiError ||

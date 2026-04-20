@@ -4,7 +4,18 @@
   "docsRoot": ".",
   "entryFileName": "index.md",
   "entryPoints": ["../src/index.ts"],
+  "excludeInternal": true,
   "excludeNotDocumented": true,
+  "intentionallyNotExported": [
+    "Dict",
+    "EndpointTree",
+    "InferClient",
+    "OperationErrors",
+    "OperationFlatParams",
+    "OperationRawParams",
+    "OperationResponse",
+    "OperationSignature"
+  ],
   "expandObjects": true,
   "expandParameters": false,
   "frontmatterGlobals": {

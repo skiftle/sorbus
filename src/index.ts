@@ -1,13 +1,11 @@
-export type { CreateClientOptions, InferClient, InferError } from './client';
+export type { CreateClientOptions } from './client';
 export type { Contract } from './contract';
-export type { Endpoint, EndpointMethod, EndpointTree } from './endpoint';
+export type { Endpoint, EndpointMethod } from './endpoint';
 export type { KeyFormat } from './key-format';
 export type {
   Cache,
   CacheEntry,
-  Dict,
   Operation,
-  OperationTree,
   RequestOptions,
   Result,
 } from './types';

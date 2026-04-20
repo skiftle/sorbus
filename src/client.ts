@@ -38,13 +38,13 @@ export interface CreateClientOptions {
   serializeKey?: ((key: string) => string) | KeyFormat;
 }
 
-/** The inferred client type for contract `T`. */
+/** @internal */
 export type InferClient<T extends Contract> = OperationTree<
   T['endpoints'],
   InferError<T>
 >;
 
-/** The inferred error type for contract `T`. */
+/** @internal */
 export type InferError<T> = T extends { error: ZodType<infer E> } ? E : unknown;
 
 /**

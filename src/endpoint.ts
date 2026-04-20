@@ -36,7 +36,7 @@ export type EndpointMethod =
   | 'POST'
   | 'PUT';
 
-/** The nested tree of endpoints, grouped by resource. */
+/** @internal */
 export interface EndpointTree {
   [key: string]: Endpoint | EndpointTree;
 }
@@ -83,6 +83,7 @@ const METHODS: ReadonlySet<string> = new Set([
   'PUT',
 ]);
 
+/** @internal */
 export function isEndpoint(value: unknown): value is Endpoint {
   return (
     isPlainObject(value) &&

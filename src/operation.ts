@@ -12,6 +12,7 @@ type UntypedOperation = ((
   raw: (params?: SeparatedParams, options?: CallOptions) => Promise<unknown>;
 };
 
+/** @internal */
 export function buildOperationTree(
   tree: EndpointTree,
   context: OperationContext,
@@ -26,6 +27,7 @@ export function buildOperationTree(
   }, {});
 }
 
+/** @internal */
 export function createOperation(
   endpoint: Endpoint,
   context: OperationContext,
