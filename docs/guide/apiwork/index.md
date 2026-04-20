@@ -255,12 +255,42 @@ result.data.invoice; // fully typed
 
 The error shape is generated from the contract. Rails validation errors map directly to typed fields — no casting, no guessing.
 
-## The Workflow
+## The Generator
+
+On the frontend, install [`apiwork`](https://github.com/skiftle/apiwork-js) and run the Sorbus generator:
+
+```bash
+npm install --save-dev apiwork
+# or
+pnpm add -D apiwork
+
+npx apiwork sorbus http://localhost:3000/api/v1/.apiwork --outdir src/api/sorbus
+# or
+pnpm exec apiwork sorbus http://localhost:3000/api/v1/.apiwork --outdir src/api/sorbus
+```
+
+Output:
 
 ```
-1. Change your Rails code (add column, change type, add enum value)
-2. Regenerate the contract
-3. TypeScript tells you what broke
+src/api/sorbus/
+  api.ts           Shared types (pagination, error shape)
+  contract.ts      Sorbus contract
+  client.ts        Client interface + createClient
+  domains/
+    invoice.ts     Domain type aliases
+  endpoints/
+    invoices.ts    OperationTree with materialized shapes
 ```
 
-The database is the source of truth. Apiwork reads it, Sorbus types it. Nothing drifts.
+Every file is plain TypeScript. The generated `client.ts` pre-materializes the client type, which matters for large APIs — see [Type Performance](../type-performance/).
+
+Use it like any Sorbus client:
+
+```typescript
+import { createClient } from './api/sorbus/client';
+
+const api = createClient('/api/v1');
+
+const { invoice } = await api.invoices.show({ id: '123' });
+```
+
