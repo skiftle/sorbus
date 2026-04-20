@@ -11,5 +11,5 @@
     "target": "ES2022",
     "verbatimModuleSyntax": true
   },
-  "include": ["src/**/*", "tests/**/*", "playground.ts"]
+  "include": ["src/**/*", "tests/**/*"]
 }
