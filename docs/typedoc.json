@@ -6,6 +6,15 @@
   "entryPoints": ["../src/index.ts"],
   "excludeInternal": true,
   "excludeNotDocumented": true,
+  "expandObjects": true,
+  "expandParameters": false,
+  "frontmatterGlobals": {
+    "next": false,
+    "prev": false
+  },
+  "hideBreadcrumbs": true,
+  "hidePageHeader": true,
+  "indexFormat": "table",
   "intentionallyNotExported": [
     "Dict",
     "EndpointTree",
@@ -16,15 +25,6 @@
     "OperationResponse",
     "OperationSignature"
   ],
-  "expandObjects": true,
-  "expandParameters": false,
-  "frontmatterGlobals": {
-    "next": false,
-    "prev": false
-  },
-  "hideBreadcrumbs": true,
-  "hidePageHeader": true,
-  "indexFormat": "table",
   "interfacePropertiesFormat": "table",
   "name": "Reference",
   "out": "./reference",
