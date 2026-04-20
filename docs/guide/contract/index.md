@@ -251,7 +251,7 @@ When schemas live in their own files (see [Splitting Across Files](#splitting-ac
 ```typescript
 // src/routes/invoices/data.remote.ts
 import { command } from '$app/server';
-import { InvoiceSchema } from '$lib/contract/schemas/invoice';
+import { InvoiceSchema } from '$lib/api/domains/invoice';
 import { api } from '$lib/api';
 
 export const createInvoice = command(
@@ -268,7 +268,7 @@ export const createInvoice = command(
 **React form validation:**
 
 ```typescript
-import { InvoiceSchema } from '@/contract/schemas/invoice';
+import { InvoiceSchema } from '@/api/domains/invoice';
 
 const CreateInvoiceSchema = InvoiceSchema.pick({
   number: true,
@@ -291,10 +291,12 @@ For larger APIs, split the contract into separate files using `defineContract` a
 
 ```
 src/
-  contract/
+  api/
     index.ts
-    error.ts
-    schemas/
+    api.ts
+    contract.ts
+    client.ts
+    domains/
       invoice.ts
       customer.ts
     endpoints/
@@ -302,10 +304,22 @@ src/
       customers.ts
 ```
 
-Define schemas in their own files:
+Define API-level schemas (error, shared primitives) in `api.ts`:
 
 ```typescript
-// contract/schemas/invoice.ts
+// api/api.ts
+import * as z from 'zod';
+
+export const ErrorSchema = z.object({
+  message: z.string(),
+  errors: z.record(z.string(), z.array(z.string())).optional(),
+});
+```
+
+Define domain schemas per resource:
+
+```typescript
+// api/domains/invoice.ts
 import * as z from 'zod';
 
 export const InvoiceSchema = z.object({
@@ -319,10 +333,10 @@ export const InvoiceSchema = z.object({
 Define endpoints per resource:
 
 ```typescript
-// contract/endpoints/invoices.ts
+// api/endpoints/invoices.ts
 import * as z from 'zod';
 import { defineEndpoint } from 'sorbus';
-import { InvoiceSchema } from '../schemas/invoice';
+import { InvoiceSchema } from '../domains/invoice';
 
 export const invoices = {
   index: defineEndpoint({
@@ -359,19 +373,48 @@ export const invoices = {
 Assemble the contract:
 
 ```typescript
-// contract/index.ts
+// api/contract.ts
 import { defineContract } from 'sorbus';
+import { ErrorSchema } from './api';
 import { invoices } from './endpoints/invoices';
 import { customers } from './endpoints/customers';
-import { error } from './error';
 
 export const contract = defineContract({
   endpoints: {
     invoices,
     customers,
   },
-  error,
+  error: ErrorSchema,
 });
+```
+
+Wrap the contract in a client factory:
+
+```typescript
+// api/client.ts
+import { createClientFactory } from 'sorbus';
+import { contract } from './contract';
+
+export const createClient = createClientFactory(contract);
+```
+
+Expose everything from a single entry point:
+
+```typescript
+// api/index.ts
+export * from './api';
+export * from './domains';
+export { createClient } from './client';
+```
+
+Consume it:
+
+```typescript
+import { createClient } from './api';
+
+const api = createClient('/v1');
+
+const { invoices } = await api.invoices.index();
 ```
 
 `defineContract` and `defineEndpoint` infer `as const` automatically — no manual type assertion needed.
