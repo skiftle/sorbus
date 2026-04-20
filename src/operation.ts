@@ -5,6 +5,13 @@ import type { Dict, OperationContext } from './types';
 import { isEndpoint } from './endpoint';
 import { execute, rethrowOrWrap } from './execute';
 
+type UntypedOperation = ((
+  params?: Dict,
+  options?: CallOptions,
+) => Promise<unknown>) & {
+  raw: (params?: SeparatedParams, options?: CallOptions) => Promise<unknown>;
+};
+
 export function buildOperationTree(
   tree: EndpointTree,
   context: OperationContext,
@@ -22,13 +29,13 @@ export function buildOperationTree(
 export function createOperation(
   endpoint: Endpoint,
   context: OperationContext,
-): unknown {
-  function flat(
+): UntypedOperation {
+  async function flat(
     params: Dict = {},
     callOptions?: CallOptions,
   ): Promise<unknown> {
     try {
-      return execute(
+      return await execute(
         endpoint,
         context,
         {
@@ -43,12 +50,12 @@ export function createOperation(
     }
   }
 
-  function raw(
+  async function raw(
     params: SeparatedParams = {},
     callOptions?: CallOptions,
   ): Promise<unknown> {
     try {
-      return execute(
+      return await execute(
         endpoint,
         context,
         {
@@ -67,6 +74,7 @@ export function createOperation(
     }
   }
 
-  flat.raw = raw;
-  return flat;
+  const operation = flat as UntypedOperation;
+  operation.raw = raw;
+  return operation;
 }

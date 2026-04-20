@@ -6,7 +6,7 @@ import { buildUrl } from './utils/buildUrl';
 import { transformKeys } from './utils/transformKeys';
 
 export interface CallOptions {
-  catch?: number[];
+  catch?: readonly number[];
   headers?: HeadersInit;
   signal?: AbortSignal;
 }
@@ -88,7 +88,7 @@ export function rethrowOrWrap(error: unknown): never {
   ) {
     throw error;
   }
-  throw new ParseError(error as Error);
+  throw new ParseError(error);
 }
 
 function buildHeaders(
@@ -125,7 +125,7 @@ async function doFetch(
 async function handleErrorResponse(
   context: OperationContext,
   response: Response,
-  catchStatuses: number[] | undefined,
+  catchStatuses: readonly number[] | undefined,
 ): Promise<unknown> {
   const errorData = await parseErrorBody(context, response);
 
@@ -154,7 +154,7 @@ function isNotModified(response: Response): boolean {
 
 function makeEmptyResult(
   status: number,
-  catchStatuses: number[] | undefined,
+  catchStatuses: readonly number[] | undefined,
 ): unknown {
   return catchStatuses
     ? { data: undefined, ok: true as const, status }
@@ -169,7 +169,7 @@ function parseCachedBody(
   context: OperationContext,
   endpoint: Endpoint,
   cacheEntry: CacheEntry,
-  catchStatuses: number[] | undefined,
+  catchStatuses: readonly number[] | undefined,
 ): unknown {
   if (!endpoint.response) return makeEmptyResult(304, catchStatuses);
 
@@ -179,7 +179,7 @@ function parseCachedBody(
     );
     return catchStatuses ? { data, ok: true as const, status: 304 } : data;
   } catch (error) {
-    throw new ParseError(error as Error);
+    throw new ParseError(error);
   }
 }
 
@@ -187,16 +187,22 @@ async function parseErrorBody(
   context: OperationContext,
   response: Response,
 ): Promise<unknown> {
+  const text = await response.text();
+
+  if (!text) return null;
+
+  let parsed: unknown;
   try {
-    const json = (await response.json()) as Dict;
-    const normalized = normalizeKeys(context, json);
-
-    if (!context.errorSchema) return normalized;
-
-    return context.errorSchema.safeParse(normalized).data ?? normalized;
+    parsed = JSON.parse(text);
   } catch {
-    return null;
+    return text;
   }
+
+  const normalized = normalizeKeys(context, parsed as Dict);
+
+  if (!context.errorSchema) return normalized;
+
+  return context.errorSchema.safeParse(normalized).data ?? normalized;
 }
 
 function parseResponseBody(
@@ -204,7 +210,7 @@ function parseResponseBody(
   endpoint: Endpoint,
   json: Dict,
   status: number,
-  catchStatuses: number[] | undefined,
+  catchStatuses: readonly number[] | undefined,
 ): unknown {
   if (!endpoint.response) return makeEmptyResult(status, catchStatuses);
 
@@ -214,7 +220,7 @@ function parseResponseBody(
     );
     return catchStatuses ? { data, ok: true as const, status } : data;
   } catch (error) {
-    throw new ParseError(error as Error);
+    throw new ParseError(error);
   }
 }
 

@@ -223,10 +223,26 @@ describe('createClient', () => {
       }
     });
 
-    it('throws ApiError with null body when response is not JSON', async () => {
+    it('throws ApiError with raw text body when response is not JSON', async () => {
       const fetchFn = vi.fn<typeof fetch>().mockResolvedValue(
         new Response('Internal Server Error', { status: 500 }),
       );
+      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+
+      try {
+        await client.invoices.get({ id: 42 });
+        expect.unreachable();
+      } catch (error) {
+        expect(error).toBeInstanceOf(ApiError);
+        expect((error as ApiError).status).toBe(500);
+        expect((error as ApiError).body).toBe('Internal Server Error');
+      }
+    });
+
+    it('throws ApiError with null body when response is empty', async () => {
+      const fetchFn = vi
+        .fn<typeof fetch>()
+        .mockResolvedValue(new Response(null, { status: 500 }));
       const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
 
       try {
@@ -663,5 +679,99 @@ describe('createClient', () => {
 
       await expect(client.ping()).resolves.toBeUndefined();
     });
+  });
+
+  describe('validation rejection', () => {
+    it('rejects (not throws) when params fail Zod validation', async () => {
+      const fetchFn = mockFetch(200, {
+        id: 1,
+        number: 'INV-1',
+        status: 'paid',
+      });
+      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+
+      // `id` must be a number — passing a string should reject the promise,
+      // not throw synchronously.
+      const promise = client.invoices.get({
+        id: 'not-a-number' as unknown as number,
+      });
+
+      await expect(promise).rejects.toBeInstanceOf(ParseError);
+      expect(fetchFn).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('path params', () => {
+    it('throws when a required path param is missing', async () => {
+      const fetchFn = mockFetch(200, {
+        id: 1,
+        number: 'INV-1',
+        status: 'paid',
+      });
+      const contract = defineContract({
+        endpoints: {
+          show: {
+            method: 'GET' as const,
+            path: '/items/:id',
+            pathParams: z.object({ id: z.string().optional() }),
+            response: { body: invoiceSchema },
+          },
+        },
+      });
+      const client = createClient(contract, BASE_URL, { fetch: fetchFn });
+
+      const promise = client.show({});
+      await expect(promise).rejects.toBeInstanceOf(ParseError);
+      await promise.catch((error: unknown) => {
+        expect((error as ParseError).cause).toBeInstanceOf(Error);
+        expect(((error as ParseError).cause as Error).message).toMatch(
+          /Missing path param: id/,
+        );
+      });
+    });
+  });
+});
+
+describe('createClientFactory', () => {
+  it('returns a factory bound to a contract', async () => {
+    const { createClientFactory } = await import('../src/client');
+    const makeClient = createClientFactory(invoiceContract);
+    const fetchFn = mockFetch(200, {
+      id: 1,
+      number: 'INV-1',
+      status: 'paid',
+    });
+
+    const client = makeClient(BASE_URL, { fetch: fetchFn });
+
+    await expect(client.invoices.get({ id: 1 })).resolves.toEqual({
+      id: 1,
+      number: 'INV-1',
+      status: 'paid',
+    });
+  });
+
+  it('creates independent clients per invocation', async () => {
+    const { createClientFactory } = await import('../src/client');
+    const makeClient = createClientFactory(invoiceContract);
+    const fetchA = mockFetch(200, {
+      id: 1,
+      number: 'A',
+      status: 'paid',
+    });
+    const fetchB = mockFetch(200, {
+      id: 2,
+      number: 'B',
+      status: 'paid',
+    });
+
+    const clientA = makeClient('https://a.example.com/', { fetch: fetchA });
+    const clientB = makeClient('https://b.example.com/', { fetch: fetchB });
+
+    await clientA.invoices.get({ id: 1 });
+    await clientB.invoices.get({ id: 2 });
+
+    expect(fetchA).toHaveBeenCalledTimes(1);
+    expect(fetchB).toHaveBeenCalledTimes(1);
   });
 });

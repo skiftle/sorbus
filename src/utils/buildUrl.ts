@@ -12,11 +12,20 @@ export function buildUrl(
 ): string {
   let path = endpointPath;
 
-  if (pathParams) {
-    path = path.replace(/:([^/]+)/g, (_match, key: string) =>
-      encodeURIComponent(String(pathParams[key])),
-    );
-  }
+  path = path.replace(/:([^/]+)/g, (_match, key: string) => {
+    const value = pathParams?.[key];
+    if (value === undefined || value === null) {
+      throw new Error(`Missing path param: ${key}`);
+    }
+    if (
+      typeof value !== 'string' &&
+      typeof value !== 'number' &&
+      typeof value !== 'boolean'
+    ) {
+      throw new Error(`Path param ${key} must be a string, number, or boolean`);
+    }
+    return encodeURIComponent(String(value));
+  });
 
   const url = new URL(path.startsWith('/') ? path.slice(1) : path, baseUrl);
 

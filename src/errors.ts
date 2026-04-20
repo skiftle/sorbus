@@ -17,9 +17,9 @@
  */
 export class ApiError extends Error {
   /** The parsed response body, or `null` if unparseable. */
-  body: unknown;
+  readonly body: unknown;
   /** The HTTP status code. */
-  status: number;
+  readonly status: number;
 
   constructor(status: number, body: unknown) {
     super(`Request failed with status ${String(status)}`);
@@ -69,7 +69,7 @@ export class FetchError extends Error {
  * ```
  */
 export class ParseError extends Error {
-  constructor(cause: Error) {
+  constructor(cause: unknown) {
     super('Failed to parse response');
     this.name = 'ParseError';
     this.cause = cause;
