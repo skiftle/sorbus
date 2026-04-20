@@ -2,8 +2,8 @@ import type { Endpoint } from './endpoint';
 import type { CacheEntry, Dict, OperationContext } from './types';
 
 import { ApiError, FetchError, ParseError } from './errors';
-import { buildUrl } from './utils/buildUrl';
-import { transformKeys } from './utils/transformKeys';
+import { buildUrl } from './utils/build-url';
+import { transformKeys } from './utils/transform-keys';
 
 export interface CallOptions {
   catch?: readonly number[];

@@ -1,10 +1,10 @@
 import type { ZodType } from 'zod';
 
 import type { Contract } from './contract';
-import type { KeyFormat } from './keyFormat';
+import type { KeyFormat } from './key-format';
 import type { Cache, OperationContext, OperationTree } from './types';
 
-import { resolveKeyTransform } from './keyFormat';
+import { resolveKeyTransform } from './key-format';
 import { buildOperationTree } from './operation';
 
 const identity = (key: string): string => key;

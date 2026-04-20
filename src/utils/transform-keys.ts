@@ -1,6 +1,6 @@
 import type { Dict } from '../types';
 
-import { isPlainObject } from './isPlainObject';
+import { isPlainObject } from './is-plain-object';
 
 export function transformKeys(
   obj: Dict,

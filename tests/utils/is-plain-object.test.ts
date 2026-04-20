@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { isPlainObject } from '../../src/utils/isPlainObject';
+import { isPlainObject } from '../../src/utils/is-plain-object';
 
 describe('isPlainObject', () => {
   it('returns true for empty object', () => {

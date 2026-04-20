@@ -1,6 +1,6 @@
 import type { ZodType } from 'zod';
 
-import { isPlainObject } from './utils/isPlainObject';
+import { isPlainObject } from './utils/is-plain-object';
 
 /** The API endpoint. */
 export interface Endpoint {

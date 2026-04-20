@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildUrl } from '../../src/utils/buildUrl';
+import { buildUrl } from '../../src/utils/build-url';
 
 const identity = (key: string): string => key;
 

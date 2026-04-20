@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { objectToURLSearchParams } from '../../src/utils/objectToURLSearchParams';
+import { objectToURLSearchParams } from '../../src/utils/object-to-url-search-params';
 
 describe('objectToURLSearchParams', () => {
   it('serializes string values', () => {

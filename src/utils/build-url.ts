@@ -1,7 +1,7 @@
 import type { Dict } from '../types';
 
-import { objectToURLSearchParams } from './objectToURLSearchParams';
-import { transformKeys } from './transformKeys';
+import { objectToURLSearchParams } from './object-to-url-search-params';
+import { transformKeys } from './transform-keys';
 
 export function buildUrl(
   endpointPath: string,

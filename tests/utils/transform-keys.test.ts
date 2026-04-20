@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { transformKeys } from '../../src/utils/transformKeys';
+import { transformKeys } from '../../src/utils/transform-keys';
 
 const toUpperCase = (key: string): string => key.toUpperCase();
 

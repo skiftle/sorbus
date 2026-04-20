@@ -5,7 +5,7 @@ export { defineContract } from './contract';
 export { defineEndpoint } from './endpoint';
 export type { Endpoint, EndpointMethod, EndpointTree } from './endpoint';
 export { ApiError, FetchError, ParseError } from './errors';
-export type { KeyFormat } from './keyFormat';
+export type { KeyFormat } from './key-format';
 export type {
   Cache,
   CacheEntry,
