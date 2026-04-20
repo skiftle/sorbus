@@ -1,7 +1,12 @@
 # Sorbus
 
-![Sorbus](docs/public/logo-light.svg#gh-light-mode-only)
-![Sorbus](docs/public/logo-dark.svg#gh-dark-mode-only)
+![Sorbus](docs/public/banner.png)
+
+---
+
+> 🚧 **Sorbus is pre-1.0 and working toward a stable 1.0.** Minor versions can still bring breaking changes, so follow the [changelog](./CHANGELOG.md).
+
+---
 
 [![npm version](https://img.shields.io/npm/v/sorbus)](https://www.npmjs.com/package/sorbus)
 [![CI](https://github.com/skiftle/sorbus/actions/workflows/ci.yml/badge.svg)](https://github.com/skiftle/sorbus/actions/workflows/ci.yml)
