@@ -26,7 +26,7 @@ pnpm add sorbus zod
 ## The Contract
 
 ```typescript
-import { z } from 'zod';
+import * as z from 'zod';
 
 const InvoiceSchema = z.object({
   id: z.string(),

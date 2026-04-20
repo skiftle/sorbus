@@ -14,7 +14,7 @@ A contract has two top-level keys:
 - `error` — a Zod schema for error responses (optional)
 
 ```typescript
-import { z } from 'zod';
+import * as z from 'zod';
 
 export const contract = {
   endpoints: {
@@ -186,7 +186,7 @@ If `errors` is omitted, `catch` accepts any `number`.
 Extract shared schemas as constants above the contract. This avoids duplication across endpoints — and since Zod schemas are plain objects, they can be reused anywhere that accepts a schema: form validation, server function input validators, test fixtures.
 
 ```typescript
-import { z } from 'zod';
+import * as z from 'zod';
 
 const InvoiceSchema = z.object({
   id: z.string(),
@@ -306,7 +306,7 @@ Define schemas in their own files:
 
 ```typescript
 // contract/schemas/invoice.ts
-import { z } from 'zod';
+import * as z from 'zod';
 
 export const InvoiceSchema = z.object({
   id: z.string(),
@@ -320,7 +320,7 @@ Define endpoints per resource:
 
 ```typescript
 // contract/endpoints/invoices.ts
-import { z } from 'zod';
+import * as z from 'zod';
 import { defineEndpoint } from 'sorbus';
 import { InvoiceSchema } from '../schemas/invoice';
 

@@ -19,7 +19,7 @@ export interface Contract {
  * @example
  * ```ts
  * import { defineContract, defineEndpoint } from 'sorbus';
- * import { z } from 'zod';
+ * import * as z from 'zod';
  *
  * const InvoiceSchema = z.object({
  *   id: z.string(),

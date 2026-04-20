@@ -50,7 +50,7 @@ export interface EndpointTree {
  * @example
  * ```ts
  * import { defineEndpoint } from 'sorbus';
- * import { z } from 'zod';
+ * import * as z from 'zod';
  *
  * const show = defineEndpoint({
  *   method: 'GET',

@@ -12,7 +12,7 @@ The contract is just TypeScript — compose schemas, pick fields for forms, reus
 
 ```typescript
 // contract.ts
-import { z } from 'zod';
+import * as z from 'zod';
 
 const InvoiceSchema = z.object({
   id: z.string(),
