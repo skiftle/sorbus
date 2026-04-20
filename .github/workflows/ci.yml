@@ -22,8 +22,7 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run format
-      - run: pnpm run lint
+      - run: pnpm exec biome ci .
 
   typecheck:
     name: Typecheck

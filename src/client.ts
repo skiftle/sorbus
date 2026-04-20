@@ -1,5 +1,4 @@
 import type { ZodType } from 'zod';
-
 import type { Contract } from './contract';
 import type { KeyFormat } from './key-format';
 import type { Cache, OperationContext, OperationTree } from './types';
@@ -86,7 +85,6 @@ export function createClient<T extends Contract>(
   baseUrl: string,
   options?: CreateClientOptions,
 ): InferClient<T>;
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
 export function createClient<T>(
   contract: Contract,
   baseUrl: string,
@@ -136,7 +134,6 @@ export function createClient(
 export function createClientFactory<T extends Contract>(
   contract: T,
 ): (baseUrl: string, options?: CreateClientOptions) => InferClient<T>;
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
 export function createClientFactory<T>(
   contract: Contract,
 ): (baseUrl: string, options?: CreateClientOptions) => T;

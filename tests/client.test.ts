@@ -78,8 +78,14 @@ const invoiceContract = defineContract({
 describe('createClient', () => {
   describe('GET requests', () => {
     it('parses response with Zod schema', async () => {
-      const fetchFn = mockFetch(200, { id: 42, number: 'INV-001', status: 'draft' });
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const fetchFn = mockFetch(200, {
+        id: 42,
+        number: 'INV-001',
+        status: 'draft',
+      });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       const result = await client.invoices.get({ id: 42 });
 
@@ -88,7 +94,9 @@ describe('createClient', () => {
 
     it('sends query params as URL search params', async () => {
       const fetchFn = mockFetch(200, { invoices: [] });
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       await client.invoices.list({ status: 'draft' });
 
@@ -97,8 +105,14 @@ describe('createClient', () => {
     });
 
     it('interpolates path params into URL', async () => {
-      const fetchFn = mockFetch(200, { id: 42, number: 'INV-001', status: 'draft' });
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const fetchFn = mockFetch(200, {
+        id: 42,
+        number: 'INV-001',
+        status: 'draft',
+      });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       await client.invoices.get({ id: 42 });
 
@@ -109,22 +123,38 @@ describe('createClient', () => {
 
   describe('POST requests', () => {
     it('sends request body as JSON', async () => {
-      const fetchFn = mockFetch(200, { id: 1, number: 'INV-001', status: 'draft' });
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const fetchFn = mockFetch(200, {
+        id: 1,
+        number: 'INV-001',
+        status: 'draft',
+      });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       await client.invoices.create({ number: 'INV-001', status: 'draft' });
 
       const [, init] = vi.mocked(fetchFn).mock.calls[0];
       expect(init?.method).toBe('POST');
-      expect(init?.body).toBe(JSON.stringify({ number: 'INV-001', status: 'draft' }));
-      expect(new Headers(init?.headers).get('Content-Type')).toBe('application/json');
+      expect(init?.body).toBe(
+        JSON.stringify({ number: 'INV-001', status: 'draft' }),
+      );
+      expect(new Headers(init?.headers).get('Content-Type')).toBe(
+        'application/json',
+      );
     });
   });
 
   describe('flat params', () => {
     it('splits mixed params into pathParams and body', async () => {
-      const fetchFn = mockFetch(200, { id: 42, number: 'INV-001', status: 'sent' });
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const fetchFn = mockFetch(200, {
+        id: 42,
+        number: 'INV-001',
+        status: 'sent',
+      });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       const result = await client.invoices.update({ id: 42, status: 'sent' });
 
@@ -138,14 +168,18 @@ describe('createClient', () => {
   describe('204 No Content', () => {
     it('returns undefined without catch', async () => {
       const fetchFn = mockFetch(204);
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       await expect(client.invoices.delete({ id: 42 })).resolves.toBeUndefined();
     });
 
     it('returns ok Result with undefined data in catch mode', async () => {
       const fetchFn = mockFetch(204);
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       const result = await client.invoices.delete({ id: 42 }, { catch: [404] });
 
@@ -156,14 +190,18 @@ describe('createClient', () => {
   describe('empty response body', () => {
     it('returns undefined for 200 with empty body', async () => {
       const fetchFn = mockFetch(200);
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       await expect(client.invoices.get({ id: 42 })).resolves.toBeUndefined();
     });
 
     it('returns ok Result with undefined data in catch mode for 200 with empty body', async () => {
       const fetchFn = mockFetch(200);
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       const result = await client.invoices.get({ id: 42 }, { catch: [404] });
 
@@ -173,8 +211,14 @@ describe('createClient', () => {
 
   describe('catch mode', () => {
     it('returns ok Result on success', async () => {
-      const fetchFn = mockFetch(200, { id: 42, number: 'INV-001', status: 'draft' });
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const fetchFn = mockFetch(200, {
+        id: 42,
+        number: 'INV-001',
+        status: 'draft',
+      });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       const result = await client.invoices.get({ id: 42 }, { catch: [404] });
 
@@ -187,7 +231,9 @@ describe('createClient', () => {
 
     it('returns error Result for caught status code', async () => {
       const fetchFn = mockFetch(404, { message: 'Not found' });
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       const result = await client.invoices.get({ id: 999 }, { catch: [404] });
 
@@ -200,7 +246,9 @@ describe('createClient', () => {
 
     it('throws ApiError for uncaught status code', async () => {
       const fetchFn = mockFetch(500, { message: 'Internal error' });
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       await expect(
         client.invoices.get({ id: 42 }, { catch: [404] }),
@@ -211,7 +259,9 @@ describe('createClient', () => {
   describe('error handling', () => {
     it('throws ApiError on non-2xx response', async () => {
       const fetchFn = mockFetch(422, { message: 'Validation failed' });
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       try {
         await client.invoices.create({ number: 'INV-001', status: 'draft' });
@@ -219,15 +269,21 @@ describe('createClient', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(ApiError);
         expect((error as ApiError).status).toBe(422);
-        expect((error as ApiError).body).toEqual({ message: 'Validation failed' });
+        expect((error as ApiError).body).toEqual({
+          message: 'Validation failed',
+        });
       }
     });
 
     it('throws ApiError with raw text body when response is not JSON', async () => {
-      const fetchFn = vi.fn<typeof fetch>().mockResolvedValue(
-        new Response('Internal Server Error', { status: 500 }),
-      );
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const fetchFn = vi
+        .fn<typeof fetch>()
+        .mockResolvedValue(
+          new Response('Internal Server Error', { status: 500 }),
+        );
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       try {
         await client.invoices.get({ id: 42 });
@@ -243,7 +299,9 @@ describe('createClient', () => {
       const fetchFn = vi
         .fn<typeof fetch>()
         .mockResolvedValue(new Response(null, { status: 500 }));
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       try {
         await client.invoices.get({ id: 42 });
@@ -256,17 +314,25 @@ describe('createClient', () => {
     });
 
     it('throws FetchError on network failure', async () => {
-      const fetchFn = vi.fn<typeof fetch>().mockRejectedValue(
-        new TypeError('Failed to fetch'),
-      );
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const fetchFn = vi
+        .fn<typeof fetch>()
+        .mockRejectedValue(new TypeError('Failed to fetch'));
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       await expect(client.invoices.get({ id: 42 })).rejects.toThrow(FetchError);
     });
 
     it('throws ParseError when response validation fails', async () => {
-      const fetchFn = mockFetch(200, { id: 'not-a-number', number: 42, status: true });
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const fetchFn = mockFetch(200, {
+        id: 'not-a-number',
+        number: 42,
+        status: true,
+      });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       await expect(client.invoices.get({ id: 42 })).rejects.toThrow(ParseError);
     });
@@ -291,20 +357,26 @@ describe('createClient', () => {
 
     it('validates error body with contract error schema', async () => {
       const fetchFn = mockFetch(422, { message: 'Validation failed' });
-      const client = createClient(errorContract(), BASE_URL, { fetch: fetchFn });
+      const client = createClient(errorContract(), BASE_URL, {
+        fetch: fetchFn,
+      });
 
       try {
         await client.get({ id: 42 });
         expect.unreachable();
       } catch (error) {
         expect(error).toBeInstanceOf(ApiError);
-        expect((error as ApiError).body).toEqual({ message: 'Validation failed' });
+        expect((error as ApiError).body).toEqual({
+          message: 'Validation failed',
+        });
       }
     });
 
     it('falls back to raw body when error schema does not match', async () => {
       const fetchFn = mockFetch(500, { error: 'unexpected format' });
-      const client = createClient(errorContract(), BASE_URL, { fetch: fetchFn });
+      const client = createClient(errorContract(), BASE_URL, {
+        fetch: fetchFn,
+      });
 
       try {
         await client.get({ id: 42 });
@@ -312,13 +384,17 @@ describe('createClient', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(ApiError);
         expect((error as ApiError).status).toBe(500);
-        expect((error as ApiError).body).toEqual({ error: 'unexpected format' });
+        expect((error as ApiError).body).toEqual({
+          error: 'unexpected format',
+        });
       }
     });
 
     it('falls back to raw body in catch mode when error schema does not match', async () => {
       const fetchFn = mockFetch(422, { error: 'unexpected format' });
-      const client = createClient(errorContract(), BASE_URL, { fetch: fetchFn });
+      const client = createClient(errorContract(), BASE_URL, {
+        fetch: fetchFn,
+      });
 
       const result = await client.get({ id: 42 }, { catch: [422] });
 
@@ -332,7 +408,11 @@ describe('createClient', () => {
 
   describe('headers', () => {
     it('sends static global headers', async () => {
-      const fetchFn = mockFetch(200, { id: 42, number: 'INV-001', status: 'draft' });
+      const fetchFn = mockFetch(200, {
+        id: 42,
+        number: 'INV-001',
+        status: 'draft',
+      });
       const client = createClient(invoiceContract, BASE_URL, {
         fetch: fetchFn,
         headers: { Authorization: 'Bearer token123' },
@@ -341,11 +421,17 @@ describe('createClient', () => {
       await client.invoices.get({ id: 42 });
 
       const [, init] = vi.mocked(fetchFn).mock.calls[0];
-      expect(new Headers(init?.headers).get('Authorization')).toBe('Bearer token123');
+      expect(new Headers(init?.headers).get('Authorization')).toBe(
+        'Bearer token123',
+      );
     });
 
     it('calls header function on each request', async () => {
-      const fetchFn = mockFetch(200, { id: 42, number: 'INV-001', status: 'draft' });
+      const fetchFn = mockFetch(200, {
+        id: 42,
+        number: 'INV-001',
+        status: 'draft',
+      });
       let callCount = 0;
       const client = createClient(invoiceContract, BASE_URL, {
         fetch: fetchFn,
@@ -358,14 +444,22 @@ describe('createClient', () => {
       await client.invoices.get({ id: 42 });
       await client.invoices.get({ id: 42 });
 
-      const headers1 = new Headers(vi.mocked(fetchFn).mock.calls[0][1]?.headers);
-      const headers2 = new Headers(vi.mocked(fetchFn).mock.calls[1][1]?.headers);
+      const headers1 = new Headers(
+        vi.mocked(fetchFn).mock.calls[0][1]?.headers,
+      );
+      const headers2 = new Headers(
+        vi.mocked(fetchFn).mock.calls[1][1]?.headers,
+      );
       expect(headers1.get('X-Request-Id')).toBe('req-1');
       expect(headers2.get('X-Request-Id')).toBe('req-2');
     });
 
     it('merges per-request headers over global headers', async () => {
-      const fetchFn = mockFetch(200, { id: 42, number: 'INV-001', status: 'draft' });
+      const fetchFn = mockFetch(200, {
+        id: 42,
+        number: 'INV-001',
+        status: 'draft',
+      });
       const client = createClient(invoiceContract, BASE_URL, {
         fetch: fetchFn,
         headers: { Authorization: 'Bearer old', 'X-Global': 'yes' },
@@ -397,7 +491,11 @@ describe('createClient', () => {
           },
         },
       });
-      const fetchFn = mockFetch(200, { id: 1, number: 'INV-001', status: 'draft' });
+      const fetchFn = mockFetch(200, {
+        id: 1,
+        number: 'INV-001',
+        status: 'draft',
+      });
       const client = createClient(contract, BASE_URL, {
         fetch: fetchFn,
         serializeKey: 'snake',
@@ -442,11 +540,16 @@ describe('createClient', () => {
             method: 'GET' as const,
             path: '/invoices/:id',
             pathParams: z.object({ id: z.number() }),
-            response: { body: z.object({ dueOn: z.string(), invoiceNumber: z.string() }) },
+            response: {
+              body: z.object({ dueOn: z.string(), invoiceNumber: z.string() }),
+            },
           },
         },
       });
-      const fetchFn = mockFetch(200, { due_on: '2024-01-15', invoice_number: 'INV-001' });
+      const fetchFn = mockFetch(200, {
+        due_on: '2024-01-15',
+        invoice_number: 'INV-001',
+      });
       const client = createClient(contract, BASE_URL, {
         fetch: fetchFn,
         normalizeKey: 'camel',
@@ -480,7 +583,9 @@ describe('createClient', () => {
         expect.unreachable();
       } catch (error) {
         expect(error).toBeInstanceOf(ApiError);
-        expect((error as ApiError).body).toEqual({ errorMessage: 'Validation failed' });
+        expect((error as ApiError).body).toEqual({
+          errorMessage: 'Validation failed',
+        });
       }
     });
 
@@ -495,7 +600,11 @@ describe('createClient', () => {
           },
         },
       });
-      const fetchFn = mockFetch(200, { ID: 42, NUMBER: 'INV-001', STATUS: 'draft' });
+      const fetchFn = mockFetch(200, {
+        ID: 42,
+        NUMBER: 'INV-001',
+        STATUS: 'draft',
+      });
       const client = createClient(contract, BASE_URL, {
         fetch: fetchFn,
         normalizeKey: (key: string) => key.toLowerCase(),
@@ -509,8 +618,14 @@ describe('createClient', () => {
 
   describe('raw mode', () => {
     it('accepts separated params', async () => {
-      const fetchFn = mockFetch(200, { id: 42, number: 'INV-001', status: 'sent' });
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const fetchFn = mockFetch(200, {
+        id: 42,
+        number: 'INV-001',
+        status: 'sent',
+      });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       const result = await client.invoices.update.raw({
         body: { status: 'sent' },
@@ -525,7 +640,9 @@ describe('createClient', () => {
 
     it('returns error Result in catch mode', async () => {
       const fetchFn = mockFetch(404, { message: 'Not found' });
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       const result = await client.invoices.get.raw(
         { pathParams: { id: 999 } },
@@ -546,16 +663,26 @@ describe('createClient', () => {
         get: vi.fn().mockReturnValue(null),
         set: vi.fn(),
       };
-      const fetchFn = mockFetch(200, { id: 42, number: 'INV-001', status: 'draft' }, {
-        ETag: '"abc123"',
+      const fetchFn = mockFetch(
+        200,
+        { id: 42, number: 'INV-001', status: 'draft' },
+        {
+          ETag: '"abc123"',
+        },
+      );
+      const client = createClient(invoiceContract, BASE_URL, {
+        cache,
+        fetch: fetchFn,
       });
-      const client = createClient(invoiceContract, BASE_URL, { cache, fetch: fetchFn });
 
       await client.invoices.get({ id: 42 });
 
       expect(cache.set).toHaveBeenCalledWith(
         expect.stringContaining('/invoices/42'),
-        { etag: '"abc123"', json: { id: 42, number: 'INV-001', status: 'draft' } },
+        {
+          etag: '"abc123"',
+          json: { id: 42, number: 'INV-001', status: 'draft' },
+        },
       );
     });
 
@@ -564,8 +691,15 @@ describe('createClient', () => {
         get: vi.fn().mockReturnValue(null),
         set: vi.fn(),
       };
-      const fetchFn = mockFetch(200, { id: 42, number: 'INV-001', status: 'draft' });
-      const client = createClient(invoiceContract, BASE_URL, { cache, fetch: fetchFn });
+      const fetchFn = mockFetch(200, {
+        id: 42,
+        number: 'INV-001',
+        status: 'draft',
+      });
+      const client = createClient(invoiceContract, BASE_URL, {
+        cache,
+        fetch: fetchFn,
+      });
 
       await client.invoices.get({ id: 42 });
 
@@ -574,11 +708,17 @@ describe('createClient', () => {
 
     it('sends If-None-Match header when cache entry exists', async () => {
       const cache = {
-        get: vi.fn().mockReturnValue({ etag: '"abc123"', json: { id: 42, number: 'INV-001', status: 'draft' } }),
+        get: vi.fn().mockReturnValue({
+          etag: '"abc123"',
+          json: { id: 42, number: 'INV-001', status: 'draft' },
+        }),
         set: vi.fn(),
       };
       const fetchFn = mockFetch(304);
-      const client = createClient(invoiceContract, BASE_URL, { cache, fetch: fetchFn });
+      const client = createClient(invoiceContract, BASE_URL, {
+        cache,
+        fetch: fetchFn,
+      });
 
       await client.invoices.get({ id: 42 });
 
@@ -588,11 +728,17 @@ describe('createClient', () => {
 
     it('returns cached data on 304 response', async () => {
       const cache = {
-        get: vi.fn().mockReturnValue({ etag: '"abc123"', json: { id: 42, number: 'INV-001', status: 'draft' } }),
+        get: vi.fn().mockReturnValue({
+          etag: '"abc123"',
+          json: { id: 42, number: 'INV-001', status: 'draft' },
+        }),
         set: vi.fn(),
       };
       const fetchFn = mockFetch(304);
-      const client = createClient(invoiceContract, BASE_URL, { cache, fetch: fetchFn });
+      const client = createClient(invoiceContract, BASE_URL, {
+        cache,
+        fetch: fetchFn,
+      });
 
       const result = await client.invoices.get({ id: 42 });
 
@@ -611,7 +757,10 @@ describe('createClient', () => {
         },
       });
       const cache = {
-        get: vi.fn().mockReturnValue({ etag: '"abc123"', json: { invoice_number: 'INV-001' } }),
+        get: vi.fn().mockReturnValue({
+          etag: '"abc123"',
+          json: { invoice_number: 'INV-001' },
+        }),
         set: vi.fn(),
       };
       const fetchFn = mockFetch(304);
@@ -629,11 +778,20 @@ describe('createClient', () => {
 
   describe('signal', () => {
     it('passes AbortSignal to fetch', async () => {
-      const fetchFn = mockFetch(200, { id: 42, number: 'INV-001', status: 'draft' });
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const fetchFn = mockFetch(200, {
+        id: 42,
+        number: 'INV-001',
+        status: 'draft',
+      });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
       const controller = new AbortController();
 
-      await client.invoices.get({ id: 42 }, { catch: [404], signal: controller.signal });
+      await client.invoices.get(
+        { id: 42 },
+        { catch: [404], signal: controller.signal },
+      );
 
       const [, init] = vi.mocked(fetchFn).mock.calls[0];
       expect(init?.signal).toBe(controller.signal);
@@ -649,7 +807,9 @@ describe('createClient', () => {
               list: {
                 method: 'GET' as const,
                 path: '/billing/invoices',
-                response: { body: z.object({ invoices: z.array(invoiceSchema) }) },
+                response: {
+                  body: z.object({ invoices: z.array(invoiceSchema) }),
+                },
               },
             },
           },
@@ -688,7 +848,9 @@ describe('createClient', () => {
         number: 'INV-1',
         status: 'paid',
       });
-      const client = createClient(invoiceContract, BASE_URL, { fetch: fetchFn });
+      const client = createClient(invoiceContract, BASE_URL, {
+        fetch: fetchFn,
+      });
 
       // `id` must be a number — passing a string should reject the promise,
       // not throw synchronously.

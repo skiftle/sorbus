@@ -53,17 +53,12 @@ export type OperationFlatParams<T> = SchemaOutput<BodyOf<T>> &
   SchemaOutput<QueryOf<T>>;
 
 export type OperationRawParams<T> = ([BodyOf<T>] extends [never]
-  ? // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-    {}
+  ? {}
   : { body: SchemaOutput<BodyOf<T>> }) &
   ([PathParamsOf<T>] extends [never]
-    ? // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-      {}
+    ? {}
     : { pathParams: SchemaOutput<PathParamsOf<T>> }) &
-  ([QueryOf<T>] extends [never]
-    ? // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-      {}
-    : { query: SchemaOutput<QueryOf<T>> });
+  ([QueryOf<T>] extends [never] ? {} : { query: SchemaOutput<QueryOf<T>> });
 
 export type OperationResponse<T> = [ResponseOf<T>] extends [never]
   ? undefined
@@ -87,8 +82,6 @@ export type OperationTree<T, TError = unknown> = {
       ? OperationTree<T[K], TError>
       : never;
 };
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type OptionalIfEmpty<T> = {} extends T ? [params?: T] : [params: T];
 
 /** The per-request options. */

@@ -1,10 +1,6 @@
-export { createClient, createClientFactory } from './client';
 export type { CreateClientOptions, InferClient, InferError } from './client';
 export type { Contract } from './contract';
-export { defineContract } from './contract';
-export { defineEndpoint } from './endpoint';
 export type { Endpoint, EndpointMethod, EndpointTree } from './endpoint';
-export { ApiError, FetchError, ParseError } from './errors';
 export type { KeyFormat } from './key-format';
 export type {
   Cache,
@@ -14,3 +10,8 @@ export type {
   RequestOptions,
   Result,
 } from './types';
+
+export { createClient, createClientFactory } from './client';
+export { defineContract } from './contract';
+export { defineEndpoint } from './endpoint';
+export { ApiError, FetchError, ParseError } from './errors';

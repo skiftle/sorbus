@@ -1,30 +1,37 @@
 {
-  "name": "Reference",
+  "classPropertiesFormat": "table",
+  "cleanOutputDir": true,
+  "docsRoot": ".",
+  "entryFileName": "index.md",
   "entryPoints": ["../src/index.ts"],
-  "tsconfig": "../tsconfig.json",
+  "excludeNotDocumented": true,
+  "expandObjects": true,
+  "expandParameters": false,
+  "frontmatterGlobals": {
+    "next": false,
+    "prev": false
+  },
+  "hideBreadcrumbs": true,
+  "hidePageHeader": true,
+  "indexFormat": "table",
+  "interfacePropertiesFormat": "table",
+  "name": "Reference",
+  "out": "./reference",
+  "parametersFormat": "table",
   "plugin": [
     "typedoc-plugin-markdown",
     "typedoc-vitepress-theme",
     "typedoc-plugin-frontmatter"
   ],
-  "out": "./reference",
-  "docsRoot": ".",
-  "router": "member",
-  "cleanOutputDir": true,
-  "entryFileName": "index.md",
   "readme": "none",
-  "excludeNotDocumented": true,
-  "hidePageHeader": true,
-  "hideBreadcrumbs": true,
-  "useCodeBlocks": false,
-  "expandObjects": true,
-  "expandParameters": false,
-
-  "parametersFormat": "table",
-  "interfacePropertiesFormat": "table",
-  "classPropertiesFormat": "table",
-  "typeDeclarationFormat": "table",
-  "indexFormat": "table",
+  "router": "member",
+  "sanitizeComments": true,
+  "sidebar": {
+    "autoConfiguration": true,
+    "collapsed": false,
+    "format": "vitepress",
+    "pretty": true
+  },
 
   "tableColumnSettings": {
     "hideDefaults": false,
@@ -35,19 +42,8 @@
     "hideValues": false,
     "leftAlignHeaders": true
   },
-
-  "sidebar": {
-    "autoConfiguration": true,
-    "format": "vitepress",
-    "pretty": true,
-    "collapsed": false
-  },
-
-  "frontmatterGlobals": {
-    "prev": false,
-    "next": false
-  },
-
-  "sanitizeComments": true,
+  "tsconfig": "../tsconfig.json",
+  "typeDeclarationFormat": "table",
+  "useCodeBlocks": false,
   "useHTMLEncodedBrackets": true
 }

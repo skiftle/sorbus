@@ -6,7 +6,13 @@ const identity = (key: string): string => key;
 
 describe('buildUrl', () => {
   it('builds URL from base and path', () => {
-    const url = buildUrl('/invoices', undefined, undefined, 'https://api.example.com/', identity);
+    const url = buildUrl(
+      '/invoices',
+      undefined,
+      undefined,
+      'https://api.example.com/',
+      identity,
+    );
 
     expect(url).toBe('https://api.example.com/invoices');
   });

@@ -1,5 +1,4 @@
 import type { ZodType } from 'zod';
-
 import type { EndpointTree } from './endpoint';
 
 /** The API contract. */

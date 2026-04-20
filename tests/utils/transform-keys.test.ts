@@ -6,7 +6,10 @@ const toUpperCase = (key: string): string => key.toUpperCase();
 
 describe('transformKeys', () => {
   it('transforms flat object keys', () => {
-    const result = transformKeys({ number: 'INV-001', status: 'draft' }, toUpperCase);
+    const result = transformKeys(
+      { number: 'INV-001', status: 'draft' },
+      toUpperCase,
+    );
 
     expect(result).toEqual({ NUMBER: 'INV-001', STATUS: 'draft' });
   });
