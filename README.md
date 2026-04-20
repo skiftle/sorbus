@@ -1,6 +1,6 @@
 # Sorbus
 
-![Sorbus](docs/public/banner.png)
+![Sorbus](docs/public/banner.svg)
 
 ---
 
