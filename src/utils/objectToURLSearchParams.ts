@@ -1,5 +1,7 @@
 import type { Dict } from '../types';
 
+import { isPlainObject } from './isPlainObject';
+
 export function objectToURLSearchParams(obj: Dict): URLSearchParams {
   const params = new URLSearchParams();
 
@@ -10,20 +12,13 @@ export function objectToURLSearchParams(obj: Dict): URLSearchParams {
 
     if (Array.isArray(value)) {
       for (const item of value) {
-        if (typeof item === 'object' && item !== null) {
-          addParams(`${key}[]`, item);
-        } else {
-          params.append(`${key}[]`, String(item));
-        }
+        addParams(`${key}[]`, item);
       }
-    } else if (typeof value === 'object') {
-      if (value instanceof Date) {
-        params.append(key, value.toISOString());
-      } else {
-        const record = value as Dict;
-        for (const [subKey, subValue] of Object.entries(record)) {
-          addParams(`${key}[${subKey}]`, subValue);
-        }
+    } else if (value instanceof Date) {
+      params.append(key, value.toISOString());
+    } else if (isPlainObject(value)) {
+      for (const [subKey, subValue] of Object.entries(value)) {
+        addParams(`${key}[${subKey}]`, subValue);
       }
     } else {
       params.append(key, String(value as boolean | number | string));
