@@ -127,4 +127,4 @@ type SchemaOutput<T> = [T] extends [never]
   ? unknown
   : T extends ZodType
     ? output<T>
-    : unknown;
+    : T;
